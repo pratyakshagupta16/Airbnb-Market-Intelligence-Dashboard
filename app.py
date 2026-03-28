@@ -17,11 +17,11 @@ st.markdown(
 "Interactive analytics for pricing trends, demand patterns, and geographic distribution."
 )
 
-# ---------------- Load Data ----------------
+#Load Data 
 
 df = pd.read_csv("Airbnb_Open_Data.csv", low_memory=False)
 
-# ---------------- Data Cleaning ----------------
+# Data Cleaning
 
 df["price"] = df["price"].replace(r"[\$,]", "", regex=True)
 df["price"] = pd.to_numeric(df["price"], errors="coerce")
@@ -36,7 +36,7 @@ df = df[
     (df["availability 365"] >= 0)
 ]
 
-# ---------------- Sidebar Filters ----------------
+# Sidebar Filters 
 
 st.sidebar.header("Filters")
 
@@ -58,7 +58,7 @@ filtered_df = df[
     (df["price"] <= price_range[1])
 ]
 
-# ---------------- KPI Metrics ----------------
+#  KPI Metrics 
 
 col1, col2, col3, col4 = st.columns(4)
 
@@ -68,10 +68,18 @@ col3.metric("⭐ Avg Reviews", round(filtered_df["number of reviews"].mean(), 2)
 col4.metric("📅 Avg Availability", round(filtered_df["availability 365"].mean(), 2))
 
 st.divider()
+st.markdown("## 📌 Executive Summary")
 
-# ---------------- Pricing Insights ----------------
+st.info("""
+🔹 Entire homes generate the highest revenue potential  
+🔹 Mid-range pricing ($300–$700) drives maximum demand  
+🔹 Manhattan dominates premium listings  
+🔹 Opportunity: Optimize pricing in mid-tier segments for higher occupancy  
+""")
 
-st.header("Pricing Insights")
+# Pricing Insights 
+
+st.header("💰 Revenue Analysis")
 
 colA, colB = st.columns(2)
 
@@ -109,9 +117,9 @@ with colB:
 
     st.plotly_chart(fig_location_price, width="stretch")
 
-# ---------------- Demand Insights ----------------
+#  Demand Insights 
 
-st.header("Demand Insights")
+st.header("📈 Customer Demand Behavior")
 
 scatter_df = filtered_df.dropna(
     subset=["number of reviews", "price", "availability 365"]
@@ -130,8 +138,7 @@ fig_demand = px.scatter(
 
 st.plotly_chart(fig_demand, width="stretch")
 
-# ---------------- Revenue Opportunity ----------------
-
+#  Revenue Opportunity 
 st.header("Revenue Opportunity Analysis")
 
 revenue_df = (
@@ -154,9 +161,9 @@ fig_revenue = px.scatter(
 
 st.plotly_chart(fig_revenue, width="stretch")
 
-# ---------------- Supply Analysis ----------------
+# Supply Analysis 
 
-st.header("Supply Analysis")
+st.header("🏙 Market Supply Distribution")
 
 supply_data = filtered_df["neighbourhood group"].value_counts().reset_index()
 supply_data.columns = ["Neighborhood","Listings"]
@@ -172,7 +179,7 @@ fig_supply = px.bar(
 
 st.plotly_chart(fig_supply, width="stretch")
 
-# ---------------- Market Share ----------------
+# Market Share 
 
 st.header("Market Share of Listings")
 
@@ -187,9 +194,9 @@ fig_market = px.pie(
 
 st.plotly_chart(fig_market, width="stretch")
 
-# ---------------- Geographic Distribution ----------------
+# Geographic Distribution 
 
-st.header("Geographic Distribution")
+st.header("🌍 Geographic Intelligence")
 
 map_df = filtered_df[["lat","long","price"]].dropna()
 
@@ -205,26 +212,29 @@ fig_map = px.scatter_map(
 
 st.plotly_chart(fig_map, width="stretch")
 
-# ---------------- Business Insights ----------------
+# Business Insights 
 
-st.header("Key Business Insights")
+st.header("📊 Key Business Insights")
 
 st.markdown("""
-### Key Findings
+### 🔍 Key Findings
 
-• Entire home listings command significantly higher prices than private rooms.
+• Entire home listings consistently command **premium pricing**, indicating higher revenue potential compared to other room types.  
 
-• Manhattan and Brooklyn dominate the Airbnb supply market.
+• **Manhattan and Brooklyn dominate the market**, showing strong supply concentration and higher competitive intensity.  
 
-• Listings priced between **$300–$600 receive the highest engagement**.
+• Listings priced in the **$300–$700 range achieve the highest engagement**, suggesting optimal pricing for demand capture.  
 
-• Some neighborhoods show **high demand with moderate pricing**, indicating revenue opportunities.
+• Several neighborhoods exhibit **high demand with moderate pricing**, highlighting opportunities for revenue optimization.  
 
-### Strategic Implications
 
-• Hosts should target **mid-range pricing for optimal demand**.
+### 🚀 Strategic Recommendations
 
-• Competitive markets require differentiated pricing strategies.
+• Focus on **mid-range pricing strategies** to balance occupancy and revenue generation.  
 
-• High-review neighborhoods signal **strong traveler demand**.
+• Use **dynamic pricing models** in high-demand locations to maximize returns.  
+
+• In competitive markets, differentiate listings through **amenities, reviews, and positioning**.  
+
+• Target high-review neighborhoods as they indicate **consistent and reliable customer demand**.  
 """)
