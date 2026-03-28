@@ -1,17 +1,3 @@
-#import pandas as pd
-
-#df = pd.read_csv("Airbnb_Open_Data.csv")
-
-#print("Shape of dataset:", df.shape)
-#print("\nColumns in dataset:")
-#print(df.columns)
-
-#print("\nDataset info:")
-#print(df.info())
-
-#print("\nMissing values in each column:")
-#print(df.isnull().sum())
-
 import pandas as pd
 
 df = pd.read_csv("Airbnb_Open_Data.csv")
